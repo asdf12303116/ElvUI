@@ -3,17 +3,17 @@ name: Development pipeline
 on:
   push:
     branches:
-      - "*"
-      - "!feature/"
-    tags-ignore:
-      - '**'
+      - "beta"
+      - "ptr"
+      - "master"
+  workflow_dispatch:     
 
 jobs:
   release:
-    name: Publish development build to CDN
+    name: Publish development build to github
     runs-on: ubuntu-latest
     env:
-      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      GITHUB_OAUTH: ${{ secrets.KEY }}
     steps:
       - name: Clone project
         uses: actions/checkout@v4
@@ -27,8 +27,13 @@ jobs:
         with:
           args: -n "{package-name}-$GITHUB_REF_NAME-{project-version}"
       - name: Get package name
-        run: |
+        run: | 
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
-      - name: Publish package
-        run: |
-          curl https://api.tukui.org/v1/upload/dev/$PACKAGE --upload-file .release/$PACKAGE -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
+      - name: Get ver
+        run: | 
+          echo "VER=$(echo "${{ env.PACKAGE }}" | awk -F'[-.]' '{print $(NF-1)}')" >> $GITHUB_ENV          
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: ".release/${{ env.PACKAGE }}"
+          tag: ${{ env.VER }}
+          commit: "beta"    
