@@ -29,10 +29,12 @@ jobs:
       - name: Get package name
         run: | 
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
-          echo "VER=$(echo "${{ env.PACKAGE }}" | sed -E 's/.*-(v[0-9]{2}\.[0-9]{2}).+([a-zA-Z0-9]{8})\.zip/\1-\2/')" >> $GITHUB_ENV  
+      - name: Get ver name
+        run: | 
+          echo "VER=$(echo "${{ env.PACKAGE }}" | sed -E 's/.*-(v[0-9]{2}\.[0-9]{2}).+([a-zA-Z0-9]{8})\.zip/\1-\2/')" >> $GITHUB_ENV    
       - name: rename
         run: | 
-          mv ".release/${{ env.PACKAGE }}" ".release/ElvUI-${{ env.VER }}.zip"         
+          mv ".release/${{ env.PACKAGE }}" ".release/ElvUI-${{ env.VER }}.zip"            
       - uses: ncipollo/release-action@v1
         with:
           artifacts: ".release/ElvUI-${{ env.VER }}.zip" 
