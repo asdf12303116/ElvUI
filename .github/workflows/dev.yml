@@ -31,7 +31,7 @@ jobs:
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
       - name: Get ver
         run: | 
-          echo "VER=$(echo "${{ env.PACKAGE }}" | sed -E 's/.*-(v[0-9]{2}\.[0-9]{2}).+([a-zA-Z0-9]{8})\.zip/\1-\2/' " >> $GITHUB_ENV          
+          echo "VER=$(echo "${{ env.PACKAGE }}" | sed -E 's/.*-(v[0-9]{2}\.[0-9]{2}).+([a-zA-Z0-9]{8})\.zip/\1-\2/')" >> $GITHUB_ENV           
       - uses: ncipollo/release-action@v1
         with:
           artifacts: ".release/${{ env.PACKAGE }}"
