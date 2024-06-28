@@ -1129,39 +1129,29 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-do
-	local function buttonOnEnter(btn)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		btn:SetVertexColor(r,g,b)
+function S:HandleDropDownBox(frame, width, template)
+	assert(frame, 'doesn\'t exist!')
+
+	local frameName = frame.GetName and frame:GetName()
+
+	if frame.Arrow then frame.Arrow:SetAlpha(0) end
+
+	if not width then
+		width = 155
 	end
-	local function buttonOnLeave(btn)
-		btn:SetVertexColor(1, 1, 1)
-	end
 
-	function S:HandleDropDownBox(frame, width, template)
-		assert(frame, 'doesn\'t exist!')
+	frame:Width(width)
+	frame:StripTextures()
+	frame:CreateBackdrop(template)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	frame.backdrop:Point('TOPLEFT', 0, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
-		local frameName = frame.GetName and frame:GetName()
-
-		if frame.Arrow then frame.Arrow:SetAlpha(0) end
-
-		if not width then
-			width = 155
-		end
-
-		frame:Width(width)
-		frame:StripTextures()
-		frame:CreateBackdrop(template)
-		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
-
-		local tex = frame:CreateTexture(nil, 'ARTWORK')
-		tex:SetTexture(E.Media.Textures.ArrowUp)
-		tex:SetRotation(3.14)
-		tex:Point('RIGHT', frame.backdrop, -3, 0)
-		tex:Size(14)
-	end
+	local tex = frame:CreateTexture(nil, 'ARTWORK')
+	tex:SetTexture(E.Media.Textures.ArrowUp)
+	tex:SetRotation(3.14)
+	tex:Point('RIGHT', frame.backdrop, -3, 0)
+	tex:Size(14)
 end
 
 function S:HandleStatusBar(frame, color, template)
