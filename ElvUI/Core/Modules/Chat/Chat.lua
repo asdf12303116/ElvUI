@@ -312,12 +312,14 @@ do --this can save some main file locals
 			z['Player-1168-0A39554F']	= itsSimpy -- [Horde] Warlock:	Imsosaucy
 			z['Player-1168-0A395551']	= itsSimpy -- [Horde] Rogue:	Imsodrippy
 			z['Player-1168-0AD0C8C9']	= itsSimpy -- [Horde] Warrior:	Imsobubbly
-			z['Player-125-0A62DE05']	= itsSimpy -- [RP] Evoker:	Lumee
+			z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
 			z['Player-125-09A7F9ED']	= itsSimpy -- [RP] Warrior:	Bunne
 			z['Player-125-09A8CC43']	= itsSimpy -- [RP] Monk:	Loppie
 			z['Player-125-09A7EB72']	= itsSimpy -- [RP] Mage:	Loppybunny
+			z['Player-125-0A62DE05']	= itsSimpy -- [RP] Evoker:	Lumee
 			z['Player-125-09A7DAD9']	= itsSimpy -- [RP] DH:		Rubee
-			z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
+			z['Player-125-0AAD259D']	= itsSimpy -- [RP] DK:		Sunne
+			z['Player-125-0AAD2555']	= itsSimpy -- [RP] Druid:	Honeybun
 			-- Melbelle (Simpys Bestie)
 			z['Melbelle-Bladefist']		= itsMel -- Hunter
 			z['Deathchaser-Bladefist']	= itsMel -- DH
@@ -3615,8 +3617,12 @@ function CH:FCF_Tab_OnClick(button)
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 
-		local tabName = self:GetName()
-		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		if E.Retail then
+			_G.FCF_Tab_SetupMenu(self)
+		else
+			local tabName = self:GetName()
+			_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		end
 	elseif button == 'MiddleButton' then
 		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then
